@@ -29,9 +29,28 @@ public class BookReview {
         return bookScanner;
     } // method connecttoBook
 
+    /*public static String nextString(String input){ // a method used to get the next word in the book
+        Scanner results = connectToBook(input);
+
+        return results.next();
+    } **/
     public static void main(String[] args) {
         // https://gutenberg.org/cache/epub/98/pg98.txt is a link
         // to the text of "Tale of Two Cities" from Project Gutenberg
         String book = "https://gutenberg.org/cache/epub/98/pg98.txt";
+        
+        DynamicArray result = new DynamicArray(); // create a dynamic array to store our result
+        String current = "";
+        Scanner results = connectToBook(book); // create a scanner connected to the book
+
+        while (results.hasNext()) { //change this
+            current = results.next(); // get the book, change this
+            
+            if (!result.contains(current)) {
+                result.add(current); // add the result if it is unique
+                // System.out.println(current); // for testing only
+            }
+        }
+
     } // method main
 } // class BookReview
