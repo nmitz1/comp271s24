@@ -43,8 +43,8 @@ public class BookReview {
         String current = "";
         Scanner results = connectToBook(book); // create a scanner connected to the book
 
-        while (results.hasNext()) { //change this
-            current = results.next(); // get the book, change this
+        while (results.hasNext()) { // loop until there is nothing left to get
+            current = results.next(); // get the next word
             
             if (!result.contains(current)) {
                 result.add(current); // add the result if it is unique
