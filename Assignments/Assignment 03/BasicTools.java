@@ -10,5 +10,15 @@ public interface BasicTools {
      * @param other DynamicArray to determine if it intersects with this object
      * @return true if two DynamicArrays have a common entry; false otherwise.
      */
-    public boolean intersects(DynamicArray other);
+    public boolean intersects(DynamicArray other) {
+        int i = 0; // set up a counter
+        boolean result = false
+        while (i < this.position) {
+            if (other.contains(this.data[i])) {
+                result = true;
+            }
+            i++;
+        }
+        return result;
+    }
 }
