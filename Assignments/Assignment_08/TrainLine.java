@@ -218,4 +218,43 @@ public class TrainLine {
         }
     } // method append
 
+    public void listStations() {
+        Station current = this.head; // start looking at the line
+        while (current != null) { // loop through the line
+            System.out.println(this.getName); // print out each station on a new line
+            current = current.getNext();
+        }
+    }
+
+    public boolean intersects(TrainLine other) {
+        Station current1 = this.head;
+        Station current2 = other.getNext();
+        boolean result = false; // set up our starting variables
+        while (current1 != null) { // loop through each train line
+            while (current2 != null) {
+                if (current1.getName().equals(current2.getName())) { // check for matching stations
+                    result = true; // change the outcome to true if there is a match
+                }
+            }
+        }
+        return result;
+    }
+
+    public int compareTo(TrainLine other) { // returns the difference in the number of stations between the trainlines
+        int count1 = 0;
+        int count2 = 0; 
+        Station current1 = this.head;
+        Station current2 = other.getNext(); // initialize our starting variables
+        while (current1 != null) { // count the stations in the invoking train line
+            current1 = current1.getNext();
+            count1++;
+        }
+        while (current2 != null) { // count the stations in the other train line
+            current2 = current2.getNext();
+            count2++;
+        }
+
+        return count1-count2; // return the difference
+    }
+
 } // class TrainLine
