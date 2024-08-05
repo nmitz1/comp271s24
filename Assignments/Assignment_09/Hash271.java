@@ -2,18 +2,34 @@ public class Hash271 {
 
     /** Default size for foundation array */
     private static final int DEFAULT_SIZE = 4;
+    
+    /** Default threshold for rehashing */
+    private static final double DEFAULT_THRESHOLD = 0.75; 
+
+    /** Measures the load factor */
+    private double loadFactor;
+
+    /** Threshold for rehashing */
+    private double threshold; 
 
     /** Foundation array of node objects */
     Node[] foundation;
 
     /** Basic constructor */
-    public Hash271(int size) {
+    public Hash271(int size, double threshold) {
         this.foundation = new Node[size];
+        this.threshold = threshold;
+        this.loadFactor = 0.0;
     } // basic constructor
+
+    /** Basic constructor with default threshold */
+    public Hash271(int size) {
+        this(size, DEFAULT_THRESHOLD);
+    } // constructor with default threshold
 
     /** Default constructor */
     public Hash271() {
-        this(DEFAULT_SIZE);
+        this(DEFAULT_SIZE, DEFAULT_THRESHOLD);
     } // default constructor
 
     /**
@@ -46,6 +62,14 @@ public class Hash271 {
             }
             // Put the new node to the array position
             this.foundation[destination] = node;
+
+            // Update the load factor
+            updateLoadFactor();
+
+            // Rehash if load factor exceeds threshold
+            if (this.loadFactor > this.threshold) {
+                rehash();
+            }
         }
     } // method put
 
@@ -77,6 +101,56 @@ public class Hash271 {
         }
         return sb.toString();
     } // method toString
+
+    /**
+     * Rehashes the nodes in the current foundation array to a new foundation array
+     * with double the original size. This method is called when the load factor
+     * exceeds the specified threshold.
+     * 
+     * The method iterates through each index of the old foundation array, and for
+     * each node at that index, it calculates the new position in the new foundation
+     * array and inserts the node there. The load factor is reset after the rehash.
+ */
+    private void rehash() {
+    Node[] oldFoundation = this.foundation;
+    this.foundation = new Node[oldFoundation.length * 2];
+    this.loadFactor = 0.0;
+
+    int index = 0;
+    while (index < oldFoundation.length) {
+        Node head = oldFoundation[index];
+        Node current = head;
+        while (current != null) {
+            Node next = current.getNext();
+            current.setNext(null);
+            put(current);
+            current = next;
+        }
+        index++;
+    }
+}
+    } // method rehash
+
+    /**
+     * Updates the load factor of the hash table. The load factor is calculated
+     * as the ratio of the total number of nodes present in the foundation array
+     * to the length of the foundation array.
+     */
+private void updateLoadFactor() {
+    int nodeCount = 0;
+    int index = 0;
+
+    while (index < this.foundation.length) {
+        Node current = this.foundation[index];
+        while (current != null) {
+            nodeCount++;
+            current = current.getNext();
+        }
+        index++;
+    }
+
+    this.loadFactor = (double) nodeCount / this.foundation.length;
+}
 
     /** Driver code */
     public static void main(String[] args) {
